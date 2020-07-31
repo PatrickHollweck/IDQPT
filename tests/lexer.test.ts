@@ -42,4 +42,24 @@ describe("The lexer", () => {
     expect(lex("[")).toEqual([TokenFactory.OpenSquareBracket()]);
     expect(lex("]")).toEqual([TokenFactory.CloseSquareBracket()]);
   });
+
+  it("can parse brackets in conjunction with other tokens", () => {
+    expect(lex("(123 + 321)")).toEqual([
+      TokenFactory.OpenRoundBracket(),
+      TokenFactory.NumberLiteral(123),
+      TokenFactory.Plus(),
+      TokenFactory.NumberLiteral(321),
+      TokenFactory.CloseRoundBracket(),
+    ]);
+
+    expect(lex("(123+ 321   )*7")).toEqual([
+      TokenFactory.OpenRoundBracket(),
+      TokenFactory.NumberLiteral(123),
+      TokenFactory.Plus(),
+      TokenFactory.NumberLiteral(321),
+      TokenFactory.CloseRoundBracket(),
+      TokenFactory.Star(),
+      TokenFactory.NumberLiteral(7),
+    ]);
+  });
 });
