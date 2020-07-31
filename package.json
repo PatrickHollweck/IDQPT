@@ -6,7 +6,8 @@
   "author": "PatrickHollweck <patrick-hollweck@gmx.de>",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@types/jest": "^26.0.7",
