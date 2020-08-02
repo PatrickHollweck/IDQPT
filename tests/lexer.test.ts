@@ -62,4 +62,11 @@ describe("The lexer", () => {
       TokenFactory.NumberLiteral(7),
     ]);
   });
+
+  it("can parse punctuation", () => {
+    expect(lex(",")).toEqual([TokenFactory.Comma()]);
+    expect(lex(";")).toEqual([TokenFactory.Semicolon()]);
+    expect(lex(".")).toEqual([TokenFactory.Dot()]);
+    expect(lex(",")).toEqual([TokenFactory.Comma()]);
+  });
 });

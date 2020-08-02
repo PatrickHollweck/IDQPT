@@ -13,6 +13,11 @@ export enum TokenType {
   CloseCurlyBracket = "T_CLOSE_CURLY_BRACKET",
   OpenSquareBracket = "T_OPEN_SQUARE_BRACKET",
   CloseSquareBracket = "T_CLOSE_SQUARE_BRACKET",
+  // Punctuation
+  Dot = "T_DOT",
+  Colon = "T_COLON",
+  Comma = "T_COMMA",
+  Semicolon = "T_SEMICOLON",
 }
 
 export class TokenFactory {
@@ -58,6 +63,22 @@ export class TokenFactory {
 
   public static CloseSquareBracket() {
     return Token.create(TokenType.CloseSquareBracket, null);
+  }
+
+  public static Dot() {
+    return Token.create(TokenType.Dot, null);
+  }
+
+  public static Comma() {
+    return Token.create(TokenType.Comma, null);
+  }
+
+  public static Colon() {
+    return Token.create(TokenType.Colon, null);
+  }
+
+  public static Semicolon() {
+    return Token.create(TokenType.Semicolon, null);
   }
 }
 

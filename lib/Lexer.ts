@@ -40,12 +40,14 @@ const LexerDefinitions: ((
   cursor: number,
   tokens: Token[]
 ) => [number, Token[]] | undefined)[] = [
+  // Whitespace
   (source, cursor, tokens) => {
     if (source[cursor].match(/\s/)) {
       // For now we just ignore whitespace.
       return [cursor + 1, tokens];
     }
   },
+  // Number Literals
   (source, cursor, tokens) => {
     const matches = source.substr(cursor).match(/^\d+/);
 
@@ -58,6 +60,7 @@ const LexerDefinitions: ((
     }
   },
   (source, cursor, tokens) => {
+    // Binary Math Operators
     switch (source[cursor]) {
       case "+":
         tokens.push(TokenFactory.Plus());
@@ -73,6 +76,7 @@ const LexerDefinitions: ((
         return [cursor + 1, tokens];
     }
   },
+  // Brackets
   (source, cursor, tokens) => {
     switch (source[cursor]) {
       case "(":
@@ -92,6 +96,23 @@ const LexerDefinitions: ((
         return [cursor + 1, tokens];
       case "]":
         tokens.push(TokenFactory.CloseSquareBracket());
+        return [cursor + 1, tokens];
+    }
+  },
+  // Punctuation
+  (source, cursor, tokens) => {
+    switch (source[cursor]) {
+      case ".":
+        tokens.push(TokenFactory.Dot());
+        return [cursor + 1, tokens];
+      case ",":
+        tokens.push(TokenFactory.Comma());
+        return [cursor + 1, tokens];
+      case ";":
+        tokens.push(TokenFactory.Semicolon());
+        return [cursor + 1, tokens];
+      case ":":
+        tokens.push(TokenFactory.Colon());
         return [cursor + 1, tokens];
     }
   },
