@@ -25,6 +25,21 @@ export const combineMatchers = (
   return null;
 };
 
+export const createExactMatcher = (
+  match: string,
+  toToken: () => Token
+): LexerMatcher => {
+  return (source, cursor, tokens) => {
+    if (source.substr(cursor, match.length) === match) {
+      tokens.push(toToken());
+
+      return [cursor + match.length, tokens];
+    }
+
+    return null;
+  };
+};
+
 export const createRegexMatcher = (
   regex: RegExp,
   toToken: (match: RegExpMatchArray) => [number, Token]

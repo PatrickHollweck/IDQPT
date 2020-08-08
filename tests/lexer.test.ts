@@ -1,5 +1,5 @@
-import { lex } from "../lib/Lexer";
-import { TokenFactory, Token } from "../lib/LexerToken";
+import { lex } from "../lib/lexer/Lexer";
+import { TokenFactory } from "../lib/lexer/LexerToken";
 
 describe("The lexer", () => {
   it("can tokenize numbers", () => {
@@ -73,6 +73,10 @@ describe("The lexer", () => {
   it("can tokenize string literals", () => {
     expect(lex('""')).toEqual([TokenFactory.StringLiteral('""')]);
     expect(lex("''")).toEqual([TokenFactory.StringLiteral("''")]);
+
+    // Escape characters should be preserved.
+    expect(lex('"\\n"')).toEqual([TokenFactory.StringLiteral(`"\\n"`)]);
+    expect(lex('"\\u2665"')).toEqual([TokenFactory.StringLiteral(`"\\u2665"`)]);
 
     expect(lex('"Hello World"')).toEqual([
       TokenFactory.StringLiteral('"Hello World"'),
