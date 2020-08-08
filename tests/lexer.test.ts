@@ -126,5 +126,15 @@ describe("The lexer", () => {
       TokenFactory.NumberLiteral(0),
       TokenFactory.Semicolon(),
     ]);
+
+    expect(lex("function sayHello(a) {}")).toEqual([
+      TokenFactory.Function(),
+      TokenFactory.Identifier("sayHello"),
+      TokenFactory.OpenRoundBracket(),
+      TokenFactory.Identifier("a"),
+      TokenFactory.CloseRoundBracket(),
+      TokenFactory.OpenCurlyBracket(),
+      TokenFactory.CloseCurlyBracket(),
+    ]);
   });
 });
