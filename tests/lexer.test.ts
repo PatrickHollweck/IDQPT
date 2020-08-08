@@ -6,14 +6,12 @@ describe("The lexer", () => {
     expect(lex("123")).toEqual([TokenFactory.NumberLiteral(123)]);
   });
 
-  it("can tokenize simple math operators", () => {
+  it("can tokenize binary operators", () => {
     expect(lex("+")).toEqual([TokenFactory.Plus()]);
-
     expect(lex("-")).toEqual([TokenFactory.Minus()]);
-
     expect(lex("*")).toEqual([TokenFactory.Star()]);
-
     expect(lex("/")).toEqual([TokenFactory.Slash()]);
+    expect(lex("=")).toEqual([TokenFactory.Equals()]);
   });
 
   it("can tokenize numbers in combination with operators", () => {

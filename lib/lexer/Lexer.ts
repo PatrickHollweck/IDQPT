@@ -77,7 +77,8 @@ const LexerDefinitions: ((
   // Exact match tokens
   (source, cursor, tokens) => {
     return combineMatchers(source, cursor, tokens, [
-      // Binary Math Operators
+      // Binary Operators
+      createExactMatcher("=", () => TokenFactory.Equals()),
       createExactMatcher("+", () => TokenFactory.Plus()),
       createExactMatcher("-", () => TokenFactory.Minus()),
       createExactMatcher("*", () => TokenFactory.Star()),

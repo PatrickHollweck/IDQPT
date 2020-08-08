@@ -6,6 +6,7 @@ export enum TokenType {
   // Variable declarations
   Var = "T_VARIABLE_VAR",
   // Operators
+  Equals = "T_EQUALS",
   Plus = "T_PLUS",
   Minus = "T_MINUS",
   Star = "T_STAR",
@@ -46,6 +47,10 @@ export class TokenFactory {
 
   public static Var() {
     return Token.create(TokenType.Var, null);
+  }
+
+  public static Equals() {
+    return Token.create(TokenType.Equals, null);
   }
 
   public static Plus() {
