@@ -106,4 +106,13 @@ const LexerDefinitions: ((
       createExactMatcher("function", () => TokenFactory.Function()),
     ]);
   },
+  // Identifier
+  (source, cursor, tokens) => {
+    return combineMatchers(source, cursor, tokens, [
+      createRegexMatcher(/^\w+/, (matches) => [
+        matches[0].length,
+        TokenFactory.Identifier(matches[0]),
+      ]),
+    ]);
+  },
 ];

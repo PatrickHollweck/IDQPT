@@ -111,4 +111,20 @@ describe("The lexer", () => {
     expect(lex("return")).toEqual([TokenFactory.Return()]);
     expect(lex("function")).toEqual([TokenFactory.Function()]);
   });
+
+  it("can parse identifier", () => {
+    expect(lex("var hello;")).toEqual([
+      TokenFactory.Var(),
+      TokenFactory.Identifier("hello"),
+      TokenFactory.Semicolon(),
+    ]);
+
+    expect(lex("var hello=0;")).toEqual([
+      TokenFactory.Var(),
+      TokenFactory.Identifier("hello"),
+      TokenFactory.Equals(),
+      TokenFactory.NumberLiteral(0),
+      TokenFactory.Semicolon(),
+    ]);
+  });
 });

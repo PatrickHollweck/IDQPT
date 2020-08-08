@@ -3,6 +3,8 @@ export enum TokenType {
   NumberLiteral = "T_NUMBER_LITERL",
   StringLiteral = "T_STRING_LITERAL",
   BooleanLiteral = "T_BOOLEAN_LITERAL",
+  // Identifier
+  Identifier = "T_IDENTIFIER",
   // Variable declarations
   Var = "T_VARIABLE_VAR",
   // Operators
@@ -39,6 +41,10 @@ export class TokenFactory {
 
   public static StringLiteral(content: string) {
     return Token.create(TokenType.StringLiteral, content);
+  }
+
+  public static Identifier(value: string) {
+    return Token.create(TokenType.Identifier, value);
   }
 
   public static BooleanLiteral(value: boolean) {
