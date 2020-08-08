@@ -103,6 +103,10 @@ describe("The lexer", () => {
       TokenFactory.CloseRoundBracket(),
     ]);
 
+    // Variables
+    expect(lex("var")).toEqual([TokenFactory.Var()]);
+
+    // Statement keywords
     expect(lex("do")).toEqual([TokenFactory.Do()]);
     expect(lex("for")).toEqual([TokenFactory.For()]);
     expect(lex("while")).toEqual([TokenFactory.While()]);

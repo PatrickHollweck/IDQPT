@@ -3,6 +3,8 @@ export enum TokenType {
   NumberLiteral = "T_NUMBER_LITERL",
   StringLiteral = "T_STRING_LITERAL",
   BooleanLiteral = "T_BOOLEAN_LITERAL",
+  // Variable declarations
+  Var = "T_VARIABLE_VAR",
   // Operators
   Plus = "T_PLUS",
   Minus = "T_MINUS",
@@ -20,7 +22,7 @@ export enum TokenType {
   Colon = "T_COLON",
   Comma = "T_COMMA",
   Semicolon = "T_SEMICOLON",
-  // Keywords
+  // Statement Keywords
   If = "T_IF",
   Do = "T_DO",
   For = "T_FOR",
@@ -40,6 +42,10 @@ export class TokenFactory {
 
   public static BooleanLiteral(value: boolean) {
     return Token.create(TokenType.BooleanLiteral, value);
+  }
+
+  public static Var() {
+    return Token.create(TokenType.Var, null);
   }
 
   public static Plus() {

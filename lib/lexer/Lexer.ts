@@ -94,7 +94,9 @@ const LexerDefinitions: ((
       createExactMatcher(",", () => TokenFactory.Comma()),
       createExactMatcher(":", () => TokenFactory.Colon()),
       createExactMatcher(";", () => TokenFactory.Semicolon()),
-      // Keywords
+      // Variable keywords
+      createExactMatcher("var", () => TokenFactory.Var()),
+      // Statement keywords
       createExactMatcher("if", () => TokenFactory.If()),
       createExactMatcher("do", () => TokenFactory.Do()),
       createExactMatcher("for", () => TokenFactory.For()),
