@@ -91,6 +91,11 @@ describe("The lexer", () => {
     ]);
   });
 
+  it("can tokenize boolean literals", () => {
+    expect(lex("true")).toEqual([TokenFactory.BooleanLiteral(true)]);
+    expect(lex("false")).toEqual([TokenFactory.BooleanLiteral(false)]);
+  });
+
   it("can tokenize keywords", () => {
     expect(lex("if()")).toEqual([
       TokenFactory.If(),

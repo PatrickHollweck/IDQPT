@@ -1,7 +1,8 @@
 export enum TokenType {
   // Literals
-  NumberLiteral = "T_NumberLiteral",
-  StringLiteral = "T_StringLiteral",
+  NumberLiteral = "T_NUMBER_LITERL",
+  StringLiteral = "T_STRING_LITERAL",
+  BooleanLiteral = "T_BOOLEAN_LITERAL",
   // Operators
   Plus = "T_PLUS",
   Minus = "T_MINUS",
@@ -35,6 +36,10 @@ export class TokenFactory {
 
   public static StringLiteral(content: string) {
     return Token.create(TokenType.StringLiteral, content);
+  }
+
+  public static BooleanLiteral(value: boolean) {
+    return Token.create(TokenType.BooleanLiteral, value);
   }
 
   public static Plus() {

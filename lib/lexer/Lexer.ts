@@ -70,6 +70,8 @@ const LexerDefinitions: ((
       createRegexMatcher(/'(.*)'/, (matches) => {
         return [matches[0].length, TokenFactory.StringLiteral(matches[0])];
       }),
+      createExactMatcher("true", () => TokenFactory.BooleanLiteral(true)),
+      createExactMatcher("false", () => TokenFactory.BooleanLiteral(false)),
     ]);
   },
   // Exact match tokens
