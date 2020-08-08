@@ -1,6 +1,7 @@
 export enum TokenType {
   // Literals
   NumberLiteral = "T_NumberLiteral",
+  StringLiteral = "T_StringLiteral",
   // Operators
   Plus = "T_PLUS",
   Minus = "T_MINUS",
@@ -18,11 +19,22 @@ export enum TokenType {
   Colon = "T_COLON",
   Comma = "T_COMMA",
   Semicolon = "T_SEMICOLON",
+  // Keywords
+  If = "T_IF",
+  Do = "T_DO",
+  For = "T_FOR",
+  While = "T_WHILE",
+  Return = "T_RETURN",
+  Function = "T_Function",
 }
 
 export class TokenFactory {
   public static NumberLiteral(value: number) {
     return Token.create(TokenType.NumberLiteral, value);
+  }
+
+  public static StringLiteral(content: string) {
+    return Token.create(TokenType.StringLiteral, content);
   }
 
   public static Plus() {
@@ -79,6 +91,30 @@ export class TokenFactory {
 
   public static Semicolon() {
     return Token.create(TokenType.Semicolon, null);
+  }
+
+  public static If() {
+    return Token.create(TokenType.If, null);
+  }
+
+  public static Do() {
+    return Token.create(TokenType.Do, null);
+  }
+
+  public static For() {
+    return Token.create(TokenType.For, null);
+  }
+
+  public static While() {
+    return Token.create(TokenType.While, null);
+  }
+
+  public static Return() {
+    return Token.create(TokenType.Return, null);
+  }
+
+  public static Function() {
+    return Token.create(TokenType.Function, null);
   }
 }
 

@@ -1,5 +1,7 @@
 import { Token, TokenFactory } from "./LexerToken";
 
+import { combineMatchers, createRegexMatcher } from "./LexerMatchers";
+
 export function lex(source: string) {
   let tokens = [];
   let cursor = 0;
@@ -59,8 +61,27 @@ const LexerDefinitions: ((
       return [cursor + num.toString().length, tokens];
     }
   },
+  // String Literals
   (source, cursor, tokens) => {
-    // Binary Math Operators
+    function pushString(content): [number, Token[]] {
+      tokens.push(TokenFactory.StringLiteral(content));
+      return [cursor + content.length, tokens];
+    }
+
+    const doubleQuotes = source.substr(cursor).match(/"(.*)"/);
+
+    if (doubleQuotes && doubleQuotes.length === 2) {
+      return pushString(doubleQuotes[0]);
+    }
+
+    const singleQuotes = source.substr(cursor).match(/'(.*)'/);
+
+    if (singleQuotes && singleQuotes.length === 2) {
+      return pushString(singleQuotes[0]);
+    }
+  },
+  // Binary Math Operators
+  (source, cursor, tokens) => {
     switch (source[cursor]) {
       case "+":
         tokens.push(TokenFactory.Plus());
@@ -115,5 +136,28 @@ const LexerDefinitions: ((
         tokens.push(TokenFactory.Colon());
         return [cursor + 1, tokens];
     }
+  },
+  // Keywords
+  (source, cursor, tokens) => {
+    return combineMatchers(source, cursor, tokens, [
+      createRegexMatcher(/if/, () => {
+        return [2, TokenFactory.If()];
+      }),
+      createRegexMatcher(/do/, () => {
+        return [2, TokenFactory.Do()];
+      }),
+      createRegexMatcher(/for/, () => {
+        return [3, TokenFactory.For()];
+      }),
+      createRegexMatcher(/while/, () => {
+        return [5, TokenFactory.While()];
+      }),
+      createRegexMatcher(/return/, () => {
+        return [6, TokenFactory.Return()];
+      }),
+      createRegexMatcher(/function/, () => {
+        return [8, TokenFactory.Function()];
+      }),
+    ]);
   },
 ];
