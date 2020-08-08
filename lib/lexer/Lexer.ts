@@ -7,7 +7,7 @@ import {
 } from "./LexerMatchers";
 
 export function lex(source: string) {
-  let tokens = [];
+  let tokens = new Array<Token>();
   let cursor = 0;
 
   const lexers = LexerDefinitions;
@@ -45,13 +45,15 @@ const LexerDefinitions: ((
   source: string,
   cursor: number,
   tokens: Token[]
-) => [number, Token[]] | undefined)[] = [
+) => [number, Token[]] | null)[] = [
   // Whitespace
   (source, cursor, tokens) => {
     if (source[cursor].match(/\s/)) {
       // For now we just ignore whitespace.
       return [cursor + 1, tokens];
     }
+
+    return null;
   },
   // Literals
   (source, cursor, tokens) => {

@@ -48,7 +48,14 @@ export const createRegexMatcher = (
     const current = source.substr(cursor);
 
     if (regex.test(current)) {
-      const [length, token] = toToken(current.match(regex));
+      const matches = current.match(regex);
+
+      if (matches == null) {
+        return null;
+      }
+
+      const [length, token] = toToken(matches);
+
       tokens.push(token);
 
       return [cursor + length, tokens];
