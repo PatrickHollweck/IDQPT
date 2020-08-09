@@ -2,18 +2,16 @@ import { Token } from "./LexerToken";
 
 export type LexerMatcher = (
   source: string,
-  cursor: number,
-  tokens: Token[]
-) => [number, Token[]] | null;
+  cursor: number
+) => [number, Token] | null;
 
 export const combineMatchers = (
   source: string,
   cursor: number,
-  tokens: Token[],
   lexers: LexerMatcher[]
 ) => {
   for (const lexer of lexers) {
-    const token = lexer(source, cursor, tokens);
+    const token = lexer(source, cursor);
 
     if (token == null) {
       continue;
@@ -29,11 +27,9 @@ export const createExactMatcher = (
   match: string,
   toToken: () => Token
 ): LexerMatcher => {
-  return (source, cursor, tokens) => {
+  return (source, cursor) => {
     if (source.substr(cursor, match.length) === match) {
-      tokens.push(toToken());
-
-      return [cursor + match.length, tokens];
+      return [cursor + match.length, toToken()];
     }
 
     return null;
@@ -44,7 +40,7 @@ export const createRegexMatcher = (
   regex: RegExp,
   toToken: (match: RegExpMatchArray) => [number, Token]
 ): LexerMatcher => {
-  return (source, cursor, tokens) => {
+  return (source, cursor) => {
     const current = source.substr(cursor);
 
     if (regex.test(current)) {
@@ -56,9 +52,7 @@ export const createRegexMatcher = (
 
       const [length, token] = toToken(matches);
 
-      tokens.push(token);
-
-      return [cursor + length, tokens];
+      return [cursor + length, token];
     }
 
     return null;

@@ -1,4 +1,12 @@
-import { Token, TokenFactory } from "./LexerToken";
+import { CompilationUnit } from "../shared/Compilation";
+
+import {
+  Token,
+  TokenFactory,
+  SourceLocation,
+  TokenLocation,
+  TokenType,
+} from "./LexerToken";
 
 import {
   combineMatchers,
@@ -6,23 +14,42 @@ import {
   createExactMatcher,
 } from "./LexerMatchers";
 
-export function lex(source: string) {
+export function lex(unit: CompilationUnit) {
+  const source = unit.getSource();
+
   let tokens = new Array<Token>();
   let cursor = 0;
-
-  const lexers = LexerDefinitions;
 
   while (true) {
     let couldMatch = false;
 
-    for (const lexer of lexers) {
-      const result = lexer(source, cursor, tokens);
+    for (const lexer of LexerDefinitions) {
+      const result = lexer(source, cursor);
 
       if (result == null) {
         continue;
       }
 
-      [cursor, tokens] = result;
+      const [nextCursor, token] = result;
+
+      if (unit.compilation.options.recordSourceLocation === true) {
+        token.location = new TokenLocation(
+          SourceLocation.fromSourceIndex(source, cursor),
+          SourceLocation.fromSourceIndex(source, nextCursor)
+        );
+      }
+
+      cursor = nextCursor;
+
+      if (unit.compilation.options.ignoreWhitespace) {
+        if (token.type === TokenType.Whitespace) {
+          couldMatch = true;
+          break;
+        }
+      }
+
+      tokens.push(token);
+
       couldMatch = true;
       break;
     }
@@ -43,21 +70,20 @@ export function lex(source: string) {
 
 const LexerDefinitions: ((
   source: string,
-  cursor: number,
-  tokens: Token[]
-) => [number, Token[]] | null)[] = [
+  cursor: number
+) => [number, Token] | null)[] = [
   // Whitespace
-  (source, cursor, tokens) => {
-    if (source[cursor].match(/\s/)) {
-      // For now we just ignore whitespace.
-      return [cursor + 1, tokens];
-    }
-
-    return null;
+  (source, cursor) => {
+    return combineMatchers(source, cursor, [
+      createRegexMatcher(/^\s+/, (matches) => [
+        matches[0].length,
+        TokenFactory.Whitespace(matches[0]),
+      ]),
+    ]);
   },
   // Literals
-  (source, cursor, tokens) => {
-    return combineMatchers(source, cursor, tokens, [
+  (source, cursor) => {
+    return combineMatchers(source, cursor, [
       createRegexMatcher(/^\d+/, (matches) => {
         const num = parseInt(matches[0], 10);
 
@@ -75,8 +101,8 @@ const LexerDefinitions: ((
     ]);
   },
   // Exact match tokens
-  (source, cursor, tokens) => {
-    return combineMatchers(source, cursor, tokens, [
+  (source, cursor) => {
+    return combineMatchers(source, cursor, [
       // Binary Operators
       createExactMatcher("=", () => TokenFactory.Equals()),
       createExactMatcher("+", () => TokenFactory.Plus()),
@@ -107,8 +133,8 @@ const LexerDefinitions: ((
     ]);
   },
   // Identifier
-  (source, cursor, tokens) => {
-    return combineMatchers(source, cursor, tokens, [
+  (source, cursor) => {
+    return combineMatchers(source, cursor, [
       createRegexMatcher(/^\w+/, (matches) => [
         matches[0].length,
         TokenFactory.Identifier(matches[0]),

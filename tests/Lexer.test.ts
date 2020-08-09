@@ -1,5 +1,24 @@
-import { lex } from "../lib/lexer/Lexer";
-import { TokenFactory } from "../lib/lexer/LexerToken";
+import { IDQPT } from "../lib/IDQPT";
+import { CompilationOptions } from "../lib/shared/Compilation";
+
+import { TokenFactory, TokenLocation } from "../lib/lexer/LexerToken";
+
+function lex(source: string, options: CompilationOptions = {}) {
+  const mergedOptions = {
+    ignoreWhitespace: true,
+    recordSourceLocation: false,
+    ...options,
+  };
+
+  return IDQPT.fromString(source, mergedOptions).lex();
+}
+
+function lexLocation(source: string, options: CompilationOptions = {}) {
+  return lex(source, {
+    recordSourceLocation: true,
+    ...options,
+  });
+}
 
 describe("The lexer", () => {
   it("can tokenize numbers", () => {
@@ -136,5 +155,31 @@ describe("The lexer", () => {
       TokenFactory.OpenCurlyBracket(),
       TokenFactory.CloseCurlyBracket(),
     ]);
+  });
+
+  describe("Source location data collection", () => {
+    it("should record token location", () => {
+      expect(lexLocation("123")).toEqual([
+        TokenFactory.NumberLiteral(123).setLocation(
+          TokenLocation.create(0, 0, 0, 3)
+        ),
+      ]);
+
+      expect(lexLocation("\n123\n")).toEqual([
+        TokenFactory.NumberLiteral(123).setLocation(
+          TokenLocation.create(1, 0, 1, 3)
+        ),
+      ]);
+
+      expect(lexLocation("123\n+\n456")).toEqual([
+        TokenFactory.NumberLiteral(123).setLocation(
+          TokenLocation.create(0, 0, 0, 3)
+        ),
+        TokenFactory.Plus().setLocation(TokenLocation.create(1, 0, 1, 1)),
+        TokenFactory.NumberLiteral(456).setLocation(
+          TokenLocation.create(2, 0, 2, 3)
+        ),
+      ]);
+    });
   });
 });

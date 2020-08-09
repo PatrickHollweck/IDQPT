@@ -1,8 +1,10 @@
 export enum TokenType {
   // Literals
-  NumberLiteral = "T_NUMBER_LITERL",
+  NumberLiteral = "T_NUMBER_LITERAL",
   StringLiteral = "T_STRING_LITERAL",
   BooleanLiteral = "T_BOOLEAN_LITERAL",
+  // Whitespace
+  Whitespace = "T_WHITESPACE",
   // Identifier
   Identifier = "T_IDENTIFIER",
   // Variable declarations
@@ -45,6 +47,10 @@ export class TokenFactory {
 
   public static Identifier(value: string) {
     return Token.create(TokenType.Identifier, value);
+  }
+
+  public static Whitespace(text: string) {
+    return Token.create(TokenType.Whitespace, text);
   }
 
   public static BooleanLiteral(value: boolean) {
@@ -140,13 +146,59 @@ export class TokenFactory {
   }
 }
 
+export class SourceLocation {
+  public line: number;
+  public column: number;
+
+  constructor(line: number, column: number) {
+    this.line = line;
+    this.column = column;
+  }
+
+  static fromSourceIndex(source: string, index: number): SourceLocation {
+    const previous = source.substr(0, index);
+    const lines = previous.split("\n");
+
+    return new SourceLocation(lines.length - 1, lines[lines.length - 1].length);
+  }
+}
+
+export class TokenLocation {
+  public start: SourceLocation;
+  public end: SourceLocation;
+
+  constructor(start: SourceLocation, end: SourceLocation) {
+    this.start = start;
+    this.end = end;
+  }
+
+  static create(
+    startLine: number,
+    startColumn: number,
+    endLine: number,
+    endColumn: number
+  ) {
+    return new TokenLocation(
+      new SourceLocation(startLine, startColumn),
+      new SourceLocation(endLine, endColumn)
+    );
+  }
+}
+
 export class Token {
   public type: TokenType;
   public value: any;
+  public location: TokenLocation | undefined;
 
   constructor(type: TokenType, value: any) {
     this.type = type;
     this.value = value;
+  }
+
+  setLocation(location: TokenLocation) {
+    this.location = location;
+
+    return this;
   }
 
   static create(type: TokenType, value: any) {
