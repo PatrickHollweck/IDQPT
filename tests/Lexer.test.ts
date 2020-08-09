@@ -1,7 +1,8 @@
 import { IDQPT } from "../lib/IDQPT";
 import { CompilationOptions } from "../lib/shared/Compilation";
 
-import { TokenFactory, TokenLocation } from "../lib/lexer/LexerToken";
+import { TokenFactory } from "../lib/lexer/LexerToken";
+import { TokenLocation } from "../lib/lexer/SourceLocation";
 
 function lex(source: string, options: CompilationOptions = {}) {
   const mergedOptions = {

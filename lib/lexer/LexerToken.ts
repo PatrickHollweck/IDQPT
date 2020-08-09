@@ -1,3 +1,5 @@
+import { TokenLocation } from "./SourceLocation";
+
 export enum TokenType {
   // Literals
   NumberLiteral = "T_NUMBER_LITERAL",
@@ -38,150 +40,111 @@ export enum TokenType {
 
 export class TokenFactory {
   public static NumberLiteral(value: number) {
-    return Token.create(TokenType.NumberLiteral, value);
+    return new Token(TokenType.NumberLiteral, value);
   }
 
   public static StringLiteral(content: string) {
-    return Token.create(TokenType.StringLiteral, content);
+    return new Token(TokenType.StringLiteral, content);
   }
 
   public static Identifier(value: string) {
-    return Token.create(TokenType.Identifier, value);
+    return new Token(TokenType.Identifier, value);
   }
 
   public static Whitespace(text: string) {
-    return Token.create(TokenType.Whitespace, text);
+    return new Token(TokenType.Whitespace, text);
   }
 
   public static BooleanLiteral(value: boolean) {
-    return Token.create(TokenType.BooleanLiteral, value);
+    return new Token(TokenType.BooleanLiteral, value);
   }
 
   public static Var() {
-    return Token.create(TokenType.Var, null);
+    return new Token(TokenType.Var, null);
   }
 
   public static Equals() {
-    return Token.create(TokenType.Equals, null);
+    return new Token(TokenType.Equals, null);
   }
 
   public static Plus() {
-    return Token.create(TokenType.Plus, null);
+    return new Token(TokenType.Plus, null);
   }
 
   public static Minus() {
-    return Token.create(TokenType.Minus, null);
+    return new Token(TokenType.Minus, null);
   }
 
   public static Star() {
-    return Token.create(TokenType.Star, null);
+    return new Token(TokenType.Star, null);
   }
 
   public static Slash() {
-    return Token.create(TokenType.Slash, null);
+    return new Token(TokenType.Slash, null);
   }
 
   public static OpenRoundBracket() {
-    return Token.create(TokenType.OpenRoundBracket, null);
+    return new Token(TokenType.OpenRoundBracket, null);
   }
 
   public static CloseRoundBracket() {
-    return Token.create(TokenType.CloseRoundBracket, null);
+    return new Token(TokenType.CloseRoundBracket, null);
   }
 
   public static OpenCurlyBracket() {
-    return Token.create(TokenType.OpenCurlyBracket, null);
+    return new Token(TokenType.OpenCurlyBracket, null);
   }
 
   public static CloseCurlyBracket() {
-    return Token.create(TokenType.CloseCurlyBracket, null);
+    return new Token(TokenType.CloseCurlyBracket, null);
   }
 
   public static OpenSquareBracket() {
-    return Token.create(TokenType.OpenSquareBracket, null);
+    return new Token(TokenType.OpenSquareBracket, null);
   }
 
   public static CloseSquareBracket() {
-    return Token.create(TokenType.CloseSquareBracket, null);
+    return new Token(TokenType.CloseSquareBracket, null);
   }
 
   public static Dot() {
-    return Token.create(TokenType.Dot, null);
+    return new Token(TokenType.Dot, null);
   }
 
   public static Comma() {
-    return Token.create(TokenType.Comma, null);
+    return new Token(TokenType.Comma, null);
   }
 
   public static Colon() {
-    return Token.create(TokenType.Colon, null);
+    return new Token(TokenType.Colon, null);
   }
 
   public static Semicolon() {
-    return Token.create(TokenType.Semicolon, null);
+    return new Token(TokenType.Semicolon, null);
   }
 
   public static If() {
-    return Token.create(TokenType.If, null);
+    return new Token(TokenType.If, null);
   }
 
   public static Do() {
-    return Token.create(TokenType.Do, null);
+    return new Token(TokenType.Do, null);
   }
 
   public static For() {
-    return Token.create(TokenType.For, null);
+    return new Token(TokenType.For, null);
   }
 
   public static While() {
-    return Token.create(TokenType.While, null);
+    return new Token(TokenType.While, null);
   }
 
   public static Return() {
-    return Token.create(TokenType.Return, null);
+    return new Token(TokenType.Return, null);
   }
 
   public static Function() {
-    return Token.create(TokenType.Function, null);
-  }
-}
-
-export class SourceLocation {
-  public line: number;
-  public column: number;
-
-  constructor(line: number, column: number) {
-    this.line = line;
-    this.column = column;
-  }
-
-  static fromSourceIndex(source: string, index: number): SourceLocation {
-    const previous = source.substr(0, index);
-    const lines = previous.split("\n");
-
-    return new SourceLocation(lines.length - 1, lines[lines.length - 1].length);
-  }
-}
-
-export class TokenLocation {
-  public start: SourceLocation;
-  public end: SourceLocation;
-
-  constructor(start: SourceLocation, end: SourceLocation) {
-    this.start = start;
-    this.end = end;
-  }
-
-  static create(
-    startLine: number,
-    startColumn: number,
-    endLine: number,
-    endColumn: number
-  ) {
-    return new TokenLocation(
-      new SourceLocation(startLine, startColumn),
-      new SourceLocation(endLine, endColumn)
-    );
+    return new Token(TokenType.Function, null);
   }
 }
 
@@ -199,9 +162,5 @@ export class Token {
     this.location = location;
 
     return this;
-  }
-
-  static create(type: TokenType, value: any) {
-    return new Token(type, value);
   }
 }

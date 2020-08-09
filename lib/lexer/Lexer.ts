@@ -1,12 +1,7 @@
 import { CompilationUnit } from "../shared/Compilation";
 
-import {
-  Token,
-  TokenFactory,
-  SourceLocation,
-  TokenLocation,
-  TokenType,
-} from "./LexerToken";
+import { Token, TokenFactory, TokenType } from "./LexerToken";
+import { TokenLocation, SourceLocation } from "./SourceLocation";
 
 import {
   combineMatchers,
