@@ -23,4 +23,18 @@ describe("The parser", () => {
       )
     );
   });
+
+  it("should serialize", () => {
+    expect(JSON.stringify(parse("1+1"))).toEqual(
+      JSON.stringify(
+        SyntaxFactory.Program(
+          SyntaxFactory.BinaryOperator(
+            SyntaxFactory.NumberLiteral(1),
+            SyntaxFactory.PlusOperator(),
+            SyntaxFactory.NumberLiteral(1)
+          )
+        )
+      )
+    );
+  });
 });
