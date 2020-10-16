@@ -25,21 +25,8 @@ export class IDQPT {
   }
 
   compile() {
-    this.lex();
-    this.parse();
-
-    return null;
-  }
-
-  public lex() {
     for (const unit of this.units) {
-      unit.lex();
-    }
-  }
-
-  public parse() {
-    for (const unit of this.units) {
-      unit.parse();
+      unit.compile();
     }
   }
 }

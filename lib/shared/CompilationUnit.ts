@@ -1,5 +1,6 @@
-import { Compilation } from "./Compilation";
 import { Token } from "../lexer/LexerToken";
+import { Compilation } from "./Compilation";
+import { SyntaxTreeNode } from "../parser/SyntaxTree";
 
 import { lex } from "../lexer/Lexer";
 import { parse } from "../parser/Parser";
@@ -7,27 +8,32 @@ import { parse } from "../parser/Parser";
 export abstract class CompilationUnit {
   public readonly compilation: Compilation;
 
-  private tokenCache: Token[] | null;
-  private ast: any | null;
+  private tokens: Token[] | null;
+  private ast: SyntaxTreeNode | null;
 
   constructor(compilation: Compilation) {
     this.compilation = compilation;
 
-    this.tokenCache = null;
+    this.tokens = null;
     this.ast = null;
   }
 
   public abstract getSource(): string;
   public abstract getSourceLocation(): string;
 
-  lex() {
-    this.tokenCache = lex(this);
+  compile() {
+    this.lex();
+    this.parse();
+  }
 
-    return this.tokenCache;
+  lex() {
+    this.tokens = lex(this);
+
+    return this.tokens;
   }
 
   parse() {
-    this.ast = parse(this.tokenCache!);
+    this.ast = parse(this.tokens!);
 
     return this.ast;
   }
