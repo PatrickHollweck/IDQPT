@@ -1,9 +1,9 @@
+import { Compilation, CompilationOptions } from "./shared/Compilation";
+
 import {
-  Compilation,
-  CompilationOptions,
   CompilationUnit,
   SourceCompilationUnit,
-} from "./shared/Compilation";
+} from "./shared/CompilationUnit";
 
 export class IDQPT {
   public compilation: Compilation;
@@ -24,14 +24,22 @@ export class IDQPT {
     return compiler;
   }
 
-  lex() {
-    const tokens = [];
+  compile() {
+    this.lex();
+    this.parse();
 
-    // For now we just concat all files. This wont work in the long run obviously.
+    return null;
+  }
+
+  public lex() {
     for (const unit of this.units) {
-      tokens.push(...unit.lex());
+      unit.lex();
     }
+  }
 
-    return tokens;
+  public parse() {
+    for (const unit of this.units) {
+      unit.parse();
+    }
   }
 }

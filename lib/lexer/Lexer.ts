@@ -1,4 +1,4 @@
-import { CompilationUnit } from "../shared/Compilation";
+import { CompilationUnit } from "../shared/CompilationUnit";
 
 import { Token, TokenFactory, TokenType } from "./LexerToken";
 import { TokenLocation, SourceLocation } from "./SourceLocation";

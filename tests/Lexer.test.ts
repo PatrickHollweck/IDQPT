@@ -1,17 +1,17 @@
-import { IDQPT } from "../lib/IDQPT";
-import { CompilationOptions } from "../lib/shared/Compilation";
+import { Compilation, CompilationOptions } from "../lib/shared/Compilation";
 
 import { TokenFactory } from "../lib/lexer/LexerToken";
 import { TokenLocation } from "../lib/lexer/SourceLocation";
+import { SourceCompilationUnit } from "../lib/shared/CompilationUnit";
 
 function lex(source: string, options: CompilationOptions = {}) {
-  const mergedOptions = {
+  const compilation = new Compilation({
     ignoreWhitespace: true,
     recordSourceLocation: false,
     ...options,
-  };
+  });
 
-  return IDQPT.fromString(source, mergedOptions).lex();
+  return new SourceCompilationUnit(compilation, source).lex();
 }
 
 function lexLocation(source: string, options: CompilationOptions = {}) {
